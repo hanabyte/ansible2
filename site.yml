@@ -5,47 +5,47 @@
   roles:
       - role: "AMAZON2023-CIS"
 
-- name: Check if swap exists
-  hosts: all
-  become: yes
-  tasks:
-    - name: Check if swap is enabled
-      command: swapon --show
-      register: swap_status
-      ignore_errors: yes
-
-    - name: Debug swap status
-      debug:
-        msg: "{{ swap_status.stdout_lines }}"
-
-    - name: Set swap existence fact
-      set_fact:
-        swap_exists: "{{ swap_status.stdout | length > 0 }}"
-
-    - name: Display swap existence result
-      debug:
-        msg: "Swap exists: {{ swap_exists }}"
-
-
-- name: Install and configure firewalld
-  hosts: all
-  become: yes
-  tasks:
-    - name: Install firewalld on CentOS/RHEL/Amazon Linux 2023
-      package:
-        name: firewalld
-        state: present
-      when: ansible_facts['os_family'] == "RedHat"
-
-    - name: Install firewalld on Ubuntu/Debian
-      apt:
-        name: firewalld
-        state: present
-        update_cache: yes
-      when: ansible_facts['os_family'] == "Debian"
-
-    - name: Start and enable firewalld service
-      service:
-        name: firewalld
-        state: started
-        enabled: yes
+#- name: Check if swap exists
+#  hosts: all
+#  become: yes
+#  tasks:
+#    - name: Check if swap is enabled
+#      command: swapon --show
+#      register: swap_status
+#      ignore_errors: yes
+#
+#    - name: Debug swap status
+#      debug:
+#        msg: "{{ swap_status.stdout_lines }}"
+#
+#    - name: Set swap existence fact
+#      set_fact:
+#        swap_exists: "{{ swap_status.stdout | length > 0 }}"
+#
+#    - name: Display swap existence result
+#      debug:
+#        msg: "Swap exists: {{ swap_exists }}"
+#
+#
+#- name: Install and configure firewalld
+#  hosts: all
+#  become: yes
+#  tasks:
+#    - name: Install firewalld on CentOS/RHEL/Amazon Linux 2023
+#      package:
+#        name: firewalld
+#        state: present
+#      when: ansible_facts['os_family'] == "RedHat"
+#
+#    - name: Install firewalld on Ubuntu/Debian
+#      apt:
+#        name: firewalld
+#        state: present
+#        update_cache: yes
+#      when: ansible_facts['os_family'] == "Debian"
+#
+#    - name: Start and enable firewalld service
+#      service:
+#        name: firewalld
+#        state: started
+#        enabled: yes
